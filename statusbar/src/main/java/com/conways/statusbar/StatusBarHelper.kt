@@ -51,12 +51,16 @@ object StatusBarHelper {
             }
             //version>=5.0
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            context.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            context.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (type == StatusBarType.Normal) {
+                context.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                context.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 context.window.statusBarColor = color
             } else {
+                context.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+                context.window.decorView.systemUiVisibility = (SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+                context.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 context.window.statusBarColor = Color.TRANSPARENT
+                context.window.navigationBarColor = Color.TRANSPARENT
             }
             //version<4.4
         } else {
@@ -65,14 +69,13 @@ object StatusBarHelper {
 
     }
 
-
-    fun SetTextStyle(context: Activity) {
+    /**
+     *
+     */
+    fun SetTextStyleDark(context: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            context.window.decorView.setSystemUiVisibility(
-                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            )
+            context.window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
-
     }
 
     fun getStatusBarHeight(context: Context): Int {
